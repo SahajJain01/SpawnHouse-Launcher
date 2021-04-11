@@ -1,0 +1,17 @@
+angular.module('app').config(function($stateProvider) {
+    $stateProvider
+        .state('splash', {
+            url: '/',
+            templateUrl: 'app/components/splash/splashView.html',
+            controller: 'splashController'
+        })
+        .state('home', {
+            url: '/home',
+            templateUrl: 'app/components/home/homeView.html'
+        })
+        .state('home.minecraft', {
+            url: '/home/minecraft',
+            templateUrl: 'app/components/minecraft/minecraftView.html',
+            controller: 'minecraftController'
+        });
+});
