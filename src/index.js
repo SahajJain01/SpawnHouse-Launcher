@@ -1,5 +1,13 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const request = require('superagent');
+const fs = require('fs');
+const admZip = require('adm-zip');
+var execFile = require('child_process').execFile;
+
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWindow;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -8,9 +16,15 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
+      enableRemoteModule: false, // turn off remote
+      preload: path.join(__dirname, "preload.js") // use a preload script
+    }
   });
 
   // and load the index.html of the app.
@@ -44,3 +58,29 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+ipcMain.on("toMainInstall", (event, args) => {
+  
+  request
+  .get('https://github.com/SpawnHouse/Valheim-ModPack/releases/latest/download/Valheim.zip')
+  .on('error', function(error) {
+    console.log(error);
+  })
+  .pipe(fs.createWriteStream('valheim.zip'))
+  .on('finish', function() {
+    console.log('finished downloading');
+    var zip = new admZip('valheim.zip');
+    console.log('start unzip');
+    zip.extractAllTo('./valheim', true);
+    console.log('finished unzip');
+    execFile('./valheim/valheim.exe', ['+connect','v.sain.host:2458'], function(err, data) {  
+      console.log(err)
+      console.log(data.toString());                       
+    });  
+    
+  });;
+
+  // Send result back to renderer process
+  mainWindow.webContents.send("fromMainInstall", {'status':'ok'});
+});
+

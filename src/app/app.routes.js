@@ -13,5 +13,10 @@ angular.module('app').config(function($stateProvider) {
             url: '/home/minecraft',
             templateUrl: 'app/components/minecraft/minecraftView.html',
             controller: 'minecraftController'
+        })
+        .state('home.valheim', {
+            url: '/home/valheim',
+            templateUrl: 'app/components/valheim/valheimView.html',
+            controller: 'valheimController'
         });
 });
