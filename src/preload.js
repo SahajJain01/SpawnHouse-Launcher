@@ -10,13 +10,13 @@ contextBridge.exposeInMainWorld(
     "api", {
         send: (channel, data) => {
             // whitelist channels
-            let validChannels = ["toMainInstall"];
+            let validChannels = ["toMainInstall", "downloadExtractRegisterMumbleRequest","downloadExtractMinecraftLatestRequest","launchMinecraftMumbleRequest"];
             if (validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
             }
         },
         receive: (channel, func) => {
-            let validChannels = ["fromMainInstall"];
+            let validChannels = ["fromMainInstall","downloadExtractRegisterMumbleResponse","downloadExtractMinecraftLatestResponse","launchMinecraftMumbleResponse"];
             if (validChannels.includes(channel)) {
                 // Deliberately strip event as it includes `sender` 
                 ipcRenderer.on(channel, (event, ...args) => func(...args));
