@@ -1,4 +1,40 @@
-HOME
-<button ui-sref="home.minecraft">Minecraft</button>
-<button ui-sref="home.valheim">Valheim</button>
-<ui-view></ui-view>
+<section class="home">
+  <header>
+    <div class="logo">Respawn</div>
+    <div class="links">
+      <ul>
+        <li><a ui-sref="minecraft">Minecraft</a></li>
+        <li><a ui-sref="valheim">Valheim</a></li>
+        <li><a href="">Log In</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="sidebar">
+      <button>Join Us</button>
+      <button>Uninstall</button>
+      <button>Repair</button>
+    </div>
+    <div class="games-wrapper">
+      <div class="game" ui-sref="minecraft">
+        <div class="icon">
+          <img ng-src="assets/img/minecraft.png" alt="" />
+        </div>
+      </div>
+      <div class="game" ui-sref="valheim">
+        <div class="icon">
+          <img ng-src="assets/img/valheim.png" alt="" />
+        </div>
+      </div>
+      <div class="game">
+        <div class="icon">
+          <img ng-src="assets/img/skyblock.png" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Version 1.0 Made By Gamers at <strong>SpawnHouse</strong></footer>
+  <div class="phantasia"></div>
+</section>
