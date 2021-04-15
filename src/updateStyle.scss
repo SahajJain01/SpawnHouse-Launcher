@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+// Colors
+
+$black: #1c1c1c;
+$notblack: #23272a;
+$white: #f7f7f7;
+$red: #df413c;
+$orange: #ed7456;
+
+html {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: $notblack;
+  color: $white;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+section {
+  height: 100vh;
+  width: 100vw;
+  max-height: 100vh;
+  max-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 200px;
+
+    img {
+      display: block;
+      max-height: 100%;
+    }
+  }
+
+  .message {
+    flex: 1;
+    max-height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ececec;
+    font-size: 0.9rem;
+
+    span {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+  }
+
+  .loader {
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+
+    svg {
+      margin: 0 auto 1em;
+    }
+  }
+
+  /*
+    Set the color of the icon
+  */
+  svg path,
+  svg rect {
+    animation: colorChange 1.5s ease-in-out infinite forwards;
+  }
+
+  @keyframes colorChange {
+    0% {
+      fill: $orange;
+    }
+
+    50% {
+      fill: $red;
+    }
+
+    100% {
+      fill: $orange;
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+}
