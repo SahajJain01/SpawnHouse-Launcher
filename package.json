@@ -1,8 +1,8 @@
 {
   "name": "spawnhouse-launcher",
-  "productName": "spawnhouse-launcher",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "productName": "ReSpawn",
+  "version": "1.0.2",
+  "description": "ReSpawn description",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,8 +13,8 @@
   },
   "keywords": [],
   "author": {
-    "name": "Sahaj Jain",
-    "email": "jainsahaj@gmail.com"
+    "name": "Sain DxD",
+    "email": "saindxd@gmail.com"
   },
   "license": "MIT",
   "config": {
@@ -24,7 +24,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "spawnhouse_launcher"
+            "name": "ReSpawn"
           }
         },
         {
@@ -46,8 +46,8 @@
   },
   "dependencies": {
     "adm-zip": "^0.5.5",
+    "electron-log": "^4.3.4",
     "electron-squirrel-startup": "^1.0.0",
-    "node-windows": "^1.0.0-beta.5",
     "regedit": "^3.0.3",
     "superagent": "^6.1.0"
   },

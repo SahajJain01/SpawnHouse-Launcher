@@ -1,14 +1,28 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, autoUpdater, dialog } = require("electron");
 const path = require("path");
 const request = require("superagent");
 const fs = require("fs");
 const admZip = require("adm-zip");
 const execFile = require("child_process").execFile;
 const regedit = require("regedit");
+const log = require('electron-log');
 
-// Keep a global reference of the window object, if you don't, the window will
+const server = 'https://appupdate.spawnhouse.com'
+//const url = `${server}/update/${process.platform}/${app.getVersion()}`
+const url = `${server}/update/${process.platform}/${app.getVersion()}`
+
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+log.info('App starting...');
+
+
+
+autoUpdater.setFeedURL({ url })
+
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let updateWindow;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require("electron-squirrel-startup")) {
@@ -41,10 +55,37 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 };
 
+const createUpdateWindow = () => {
+  // Create the browser window.
+  updateWindow = new BrowserWindow({
+    width: 480,
+    height: 640,
+    webPreferences: {
+      nodeIntegration: false, // is default value after Electron v5
+      contextIsolation: true, // protect against prototype pollution
+      enableRemoteModule: false, // turn off remote
+      preload: path.join(__dirname, "preload.js"), // use a preload script
+      devTools: true,
+      titleBarStyle: "hidden",
+      frame: false,
+      backgroundColor: "#1c1c1c",
+    },
+  });
+
+  updateWindow.setMenu(null),
+    // and load the index.html of the app.
+    updateWindow.loadFile(path.join(__dirname, "update.html"));
+
+  // Open the DevTools.
+  updateWindow.webContents.openDevTools();
+
+  autoUpdater.checkForUpdates();
+};
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", createWindow);
+app.on("ready", createUpdateWindow);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
@@ -62,6 +103,48 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+function sendStatus(text) {
+  log.info(text);
+  if (mainWindow) {
+    mainWindow.webContents.send('message', text);
+  }
+}
+
+
+autoUpdater.on('checking-for-update', () => {
+  sendStatus('Checking for update...');
+})
+autoUpdater.on('update-available', (ev, info) => {
+  sendStatus('Update available.');
+  log.info('info', info);
+  log.info('arguments', arguments);
+})
+autoUpdater.on('update-not-available', (ev, info) => {
+  sendStatus('Update not available.');
+  log.info('info', info);
+  log.info('arguments', arguments);
+  var window = remote.getCurrentWindow();
+  createWindow();
+  updateWindow.close();
+})
+autoUpdater.on('error', (ev, err) => {
+  sendStatus('Error in auto-updater.');
+  log.info('err', err);
+  log.info('arguments', arguments);
+  createWindow();
+  updateWindow.close();
+})
+
+
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+  autoUpdater.quitAndInstall();
+})
+
+autoUpdater.on('error', message => {
+  console.error('There was a problem updating the application')
+  console.error(message)
+})
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
