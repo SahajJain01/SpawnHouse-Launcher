@@ -45,7 +45,7 @@ const createWindow = () => {
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: false, // turn off remote
       preload: path.join(__dirname, "preload.js"), // use a preload script
-      devTools: true,
+      devTools: false,
       backgroundColor: "#1c1c1c",
     },
   });
@@ -55,7 +55,7 @@ const createWindow = () => {
     mainWindow.loadFile(path.join(__dirname, "index.html"));
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  //mainWindow.webContents.openDevTools();
 };
 
 const createUpdateWindow = () => {
@@ -69,7 +69,7 @@ const createUpdateWindow = () => {
     frame: false,
     backgroundColor: "#1c1c1c",
     webPreferences: {
-      devTools: true,
+      devTools: false,
       preload: path.join(__dirname, "updateHandler.js"),
     },
   });
@@ -79,7 +79,7 @@ const createUpdateWindow = () => {
     updateWindow.loadFile(path.join(__dirname, "update.html"));
 
   // Open the DevTools.
-  updateWindow.webContents.openDevTools();
+  //updateWindow.webContents.openDevTools();
 
   autoUpdater.checkForUpdates();
 };

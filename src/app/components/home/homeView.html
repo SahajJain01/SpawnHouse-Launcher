@@ -1,4 +1,15 @@
 <section class="home">
+
+  <div>
+    <div></div>
+    <div>
+      <button onclick="close()">Close</button>
+      <button>Minimise</button>
+      <button>Maximise</button>
+      <button>Back</button>
+    </div>
+  </div>
+
   <header>
     <div class="logo"><img src="assets/img/logo.png" alt="" /> ReSpawn</div>
     <div class="links">
@@ -10,32 +21,7 @@
     </div>
   </header>
 
-  <div class="content">
-    <!-- <div class="sidebar">
-      <button>Log In</button>
-      <button>Uninstall</button>
-      <button>Repair</button>
-    </div> -->
-    <div class="content">
-      <div class="games-wrapper">
-        <div class="game" ui-sref="minecraft">
-          <div class="icon">
-            <img ng-src="assets/img/minecraft.png" alt="" />
-          </div>
-        </div>
-        <div class="game" ui-sref="valheim">
-          <div class="icon">
-            <img ng-src="assets/img/valheim.png" alt="" />
-          </div>
-        </div>
-        <div class="game">
-          <div class="icon">
-            <img ng-src="assets/img/skyblock.png" alt="" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <ui-view></ui-view>
 
   <footer>Version 1.0.4 Made By Gamers at <strong>SpawnHouse</strong></footer>
   <div class="phantasia"></div>
