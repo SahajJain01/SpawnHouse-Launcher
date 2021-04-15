@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+html {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #23272a;
+  color: #f7f7f7;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+section {
+  height: 100vh;
+  width: 100vw;
+  max-height: 100vh;
+  max-width: 100vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  /*
+    Set the color of the icon
+  */
+}
+
+section .logo {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  max-height: 200px;
+}
+
+section .logo img {
+  display: block;
+  max-height: 100%;
+}
+
+section .message {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  max-height: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #ececec;
+  font-size: 0.9rem;
+}
+
+section .message span {
+  display: block;
+  -webkit-animation: fadeIn 0.5s ease-in-out forwards;
+          animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+section .loader {
+  height: 50px;
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+}
+
+section .loader svg {
+  margin: 0 auto 1em;
+}
+
+section svg path,
+section svg rect {
+  -webkit-animation: colorChange 1.5s ease-in-out infinite forwards;
+          animation: colorChange 1.5s ease-in-out infinite forwards;
+}
+
+@-webkit-keyframes colorChange {
+  0% {
+    fill: #ed7456;
+  }
+  50% {
+    fill: #df413c;
+  }
+  100% {
+    fill: #ed7456;
+  }
+}
+
+@keyframes colorChange {
+  0% {
+    fill: #ed7456;
+  }
+  50% {
+    fill: #df413c;
+  }
+  100% {
+    fill: #ed7456;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/*# sourceMappingURL=updateStyle.css.map */

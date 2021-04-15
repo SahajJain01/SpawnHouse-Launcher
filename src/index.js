@@ -1,24 +1,27 @@
-const { app, BrowserWindow, ipcMain, autoUpdater, dialog } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  autoUpdater,
+  dialog,
+} = require("electron");
 const path = require("path");
 const request = require("superagent");
 const fs = require("fs");
 const admZip = require("adm-zip");
 const execFile = require("child_process").execFile;
 const regedit = require("regedit");
-const log = require('electron-log');
+const log = require("electron-log");
 
-const server = 'https://appupdate.spawnhouse.com'
+const server = "https://appupdate.spawnhouse.com";
 //const url = `${server}/update/${process.platform}/${app.getVersion()}`
-const url = `${server}/update/${process.platform}/${app.getVersion()}`
-
+const url = `${server}/update/${process.platform}/${app.getVersion()}`;
 
 autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
-log.info('App starting...');
+autoUpdater.logger.transports.file.level = "info";
+log.info("App starting...");
 
-
-
-autoUpdater.setFeedURL({ url })
+autoUpdater.setFeedURL({ url });
 
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -60,15 +63,14 @@ const createUpdateWindow = () => {
   updateWindow = new BrowserWindow({
     width: 480,
     height: 640,
+    contextIsolation: true, // protect against prototype pollution
+    enableRemoteModule: false, // turn off remote
+    titleBarStyle: "hidden",
+    frame: false,
+    backgroundColor: "#1c1c1c",
     webPreferences: {
-      nodeIntegration: false, // is default value after Electron v5
-      contextIsolation: true, // protect against prototype pollution
-      enableRemoteModule: false, // turn off remote
-      preload: path.join(__dirname, "preload.js"), // use a preload script
       devTools: true,
-      titleBarStyle: "hidden",
-      frame: false,
-      backgroundColor: "#1c1c1c",
+      preload: path.join(__dirname, "updateHandler.js"),
     },
   });
 
@@ -107,43 +109,66 @@ app.on("activate", () => {
 function sendStatus(text) {
   log.info(text);
   if (mainWindow) {
-    mainWindow.webContents.send('message', text);
+    mainWindow.webContents.send("message", text);
   }
 }
 
+autoUpdater.on("checking-for-update", () => {
+  sendStatus("Checking for update...");
 
-autoUpdater.on('checking-for-update', () => {
-  sendStatus('Checking for update...');
-})
-autoUpdater.on('update-available', (ev, info) => {
-  sendStatus('Update available.');
-  log.info('info', info);
-  log.info('arguments', arguments);
-})
-autoUpdater.on('update-not-available', (ev, info) => {
-  sendStatus('Update not available.');
-  log.info('info', info);
-  log.info('arguments', arguments);
+  ipcMain.on("invokeAction", function (event, data) {
+    event.sender.send("checking", data);
+  });
+});
+
+autoUpdater.on("update-available", (ev, info) => {
+  sendStatus("Update available.");
+  log.info("info", info);
+  log.info("arguments", arguments);
+
+  ipcMain.on("invokeAction", function (event, data) {
+    event.sender.send("update", data);
+  });
+});
+
+autoUpdater.on("update-not-available", (ev, info) => {
+  sendStatus("Update not available.");
+  log.info("info", info);
+  log.info("arguments", arguments);
+
+  ipcMain.on("invokeAction", function (event, data) {
+    event.sender.send("no-update", data);
+  });
+
   createWindow();
   updateWindow.close();
-})
-autoUpdater.on('error', (ev, err) => {
-  sendStatus('Error in auto-updater.');
-  log.info('err', err);
-  log.info('arguments', arguments);
+});
+
+autoUpdater.on("error", (ev, err) => {
+  sendStatus("Error in auto-updater.");
+  log.info("err", err);
+  log.info("arguments", arguments);
+
+  ipcMain.on("invokeAction", function (event, data) {
+    event.sender.send("error", data);
+  });
+
   createWindow();
   updateWindow.close();
-})
+});
 
+autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
+  ipcMain.on("invokeAction", function (event, data) {
+    event.sender.send("update-done", data);
+  });
 
-autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
   autoUpdater.quitAndInstall();
-})
+});
 
-autoUpdater.on('error', message => {
-  console.error('There was a problem updating the application')
-  console.error(message)
-})
+autoUpdater.on("error", (message) => {
+  console.error("There was a problem updating the application");
+  // console.error(message)
+});
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
