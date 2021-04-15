@@ -124,7 +124,6 @@ autoUpdater.on('update-not-available', (ev, info) => {
   sendStatus('Update not available.');
   log.info('info', info);
   log.info('arguments', arguments);
-  var window = remote.getCurrentWindow();
   createWindow();
   updateWindow.close();
 })
