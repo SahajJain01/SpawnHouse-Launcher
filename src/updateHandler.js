@@ -30,5 +30,5 @@ ipc.once("no-update", function (event, response) {
 
 ipc.once("error", function (event, response) {
   let msg = document.getElementById("msg");
-  msg.innerHTML = "<span> Error </span>";
+  msg.innerHTML = "<span> Error occured. Skipping in 5 seconds</span>";
 });

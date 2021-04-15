@@ -87,11 +87,5 @@ typings/
 
 # Electron-Forge
 out/
-valheim.zip
 
-valheim/
-Minecraft.zip
-
-Minecraft/
-MumblePortable/
 *.zip

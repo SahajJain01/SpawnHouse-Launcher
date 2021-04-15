@@ -39,6 +39,7 @@ const createWindow = () => {
     width: 1024,
     height: 768,
     titleBarStyle: "hiddenInset",
+    frame: false,
     webPreferences: {
       nodeIntegration: false, // is default value after Electron v5
       contextIsolation: true, // protect against prototype pollution
@@ -152,10 +153,11 @@ autoUpdater.on("error", (ev, err) => {
   ipcMain.on("invokeAction", function (event, data) {
     event.sender.send("error", data);
   });
-
-  createWindow();
-  mainWindow.maximize();
-  updateWindow.close();
+  
+  setTimeout(() => {
+    createWindow();
+    updateWindow.close();
+  }, 5000);
 });
 
 autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
