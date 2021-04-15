@@ -38,14 +38,13 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
+    titleBarStyle: "hiddenInset",
     webPreferences: {
       nodeIntegration: false, // is default value after Electron v5
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: false, // turn off remote
       preload: path.join(__dirname, "preload.js"), // use a preload script
       devTools: true,
-      titleBarStyle: "hidden",
-      frame: false,
       backgroundColor: "#1c1c1c",
     },
   });
@@ -141,6 +140,7 @@ autoUpdater.on("update-not-available", (ev, info) => {
   });
 
   createWindow();
+  mainWindow.maximize();
   updateWindow.close();
 });
 
@@ -154,6 +154,7 @@ autoUpdater.on("error", (ev, err) => {
   });
 
   createWindow();
+  mainWindow.maximize();
   updateWindow.close();
 });
 

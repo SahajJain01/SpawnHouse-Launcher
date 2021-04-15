@@ -24,6 +24,487 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+header {
+  flex: 1;
+  width: 100%;
+  max-width: 95%;
+  max-height: 60px;
+  border-radius: 10px;
+  margin-top: 30px;
+  padding: 20px 50px;
+  display: flex;
+  align-items: center;
+  // background-color: rgba(0, 0, 0, 0.3);
+  // backdrop-filter: blur(2px);
+  z-index: 30;
+
+  .logo {
+    flex: 1;
+    max-height: 60px;
+    max-width: 200px;
+    display: flex;
+    overflow: hidden;
+    text-transform: uppercase;
+    align-items: center;
+    font-size: 1.5rem;
+
+    img {
+      display: block;
+      height: 60px;
+      margin-right: 10px;
+    }
+  }
+
+  .links {
+    flex: 2;
+
+    ul {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      list-style-type: none;
+      justify-content: flex-end;
+
+      li {
+        height: 100%;
+        margin: 0 10px;
+
+        a {
+          width: 150px;
+          padding: 10px 30px;
+          margin-left: 5px;
+          border: none;
+          outline: none;
+          border-radius: 5px;
+          color: #ececec;
+          background-color: rgba(0, 0, 0, 0.3);
+          transition: 0.2s all ease-in-out;
+          backdrop-filter: blur(2px);
+          text-transform: uppercase;
+          font-weight: 400;
+          letter-spacing: 1px;
+          font-size: 0.8rem;
+
+          &:hover {
+            cursor: pointer;
+            transition: 0.2s all ease-in-out;
+            color: #fff;
+            background-color: rgba(223, 65, 60, 0.7);
+          }
+        }
+      }
+    }
+  }
+}
+
+footer {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  max-width: 95%;
+  max-height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 0.7rem;
+  color: #bcbcbc;
+  margin-bottom: 20px;
+  bottom: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  z-index: 30;
+
+  strong {
+    display: inline-block;
+    margin-left: 5px;
+    color: #fff;
+  }
+}
+
+.home {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1s ease-in forwards;
+  z-index: 30;
+
+  .content {
+    flex: 1;
+    width: 100%;
+    max-width: 95%;
+    margin-top: 40px;
+    display: flex;
+    z-index: 30;
+
+    .sidebar {
+      flex: 1;
+      max-width: 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      button {
+        width: 100%;
+        padding: 10px 10px;
+        margin: 10px 0;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        color: #ececec;
+        background-color: rgba(0, 0, 0, 0.3);
+        transition: 0.2s all ease-in-out;
+        backdrop-filter: blur(2px);
+        text-transform: uppercase;
+        font-weight: 400;
+        letter-spacing: 1px;
+        font-size: 1rem;
+
+        &:hover {
+          cursor: pointer;
+          transition: 0.2s all ease-in-out;
+          color: #fff;
+          background-color: rgba(223, 65, 60, 0.7);
+        }
+      }
+    }
+
+    .game-view {
+      flex: 1;
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+
+      .game-header {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        max-height: 200px;
+        border-radius: 5px;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(5px);
+
+        span {
+          display: block;
+        }
+
+        .server-name {
+          font-size: 2rem;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+
+        .players {
+          display: flex;
+          align-items: center;
+          margin: 10px 0;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .description {
+          margin: 10px 0;
+          color: #bcbcbc;
+        }
+      }
+
+      .game-options {
+        flex: 1;
+        display: flex;
+        padding: 15px;
+
+        .col-xl {
+          flex: 2;
+          padding-top: 60px;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .col {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: flex-end;
+
+          button {
+            outline: none;
+            border: none;
+            border-radius: 10px;
+            margin: 10px 0;
+            padding: 15px 0;
+            background: $orange;
+            color: #fff;
+            width: 80%;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.2s all ease-in-out;
+
+            &:hover {
+              background: $red;
+              transition: 0.2s all ease-in-out;
+            }
+          }
+        }
+
+        .option {
+          height: 40px;
+          display: flex;
+          align-items: center;
+
+          input[type="checkbox"] {
+            display: none;
+          }
+
+          input[type="checkbox"] + label {
+            display: block;
+            position: relative;
+            padding-left: 50px;
+
+            margin-bottom: 20px;
+            font: 1rem "Poppins", sans-serif;
+            color: #ccc;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.12s, border-color 0.08s;
+          }
+
+          input[type="checkbox"] + label:before {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid $orange;
+            position: absolute;
+            left: 0;
+            top: 3px;
+            opacity: 0.6;
+            transition: all 0.12s, border-color 0.08s;
+          }
+
+          input[type="checkbox"]:checked + label:before {
+            height: 15px;
+            width: 15px;
+            background-color: #d43933;
+            border-radius: 50%;
+            opacity: 1;
+            transform: rotate(45deg);
+          }
+
+          input[type="checkbox"]:checked + label {
+            padding-left: 30px;
+          }
+        }
+      }
+    }
+
+    .sidebar-valheim {
+      flex: 1;
+      max-width: 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #23272a;
+      border-radius: 10px;
+      opacity: 0.9;
+      backdrop-filter: blur(2px);
+      animation: valheimImages 12s ease-in-out infinite forwards;
+      background-repeat: no-repeat;
+      background-size: fill;
+      background-position: center;
+    }
+
+    @keyframes valheimImages {
+      0% {
+        background: url("assets/img/valheim/1.png");
+        background-repeat: no-repeat;
+        background-size: fill;
+        background-position: center;
+      }
+
+      33% {
+        background: url("assets/img/valheim/2.png");
+        background-repeat: no-repeat;
+        background-size: fill;
+        background-position: center;
+      }
+
+      66% {
+        background: url("assets/img/valheim/3.png");
+        background-repeat: no-repeat;
+        background-size: fill;
+        background-position: center;
+      }
+
+      100% {
+        background: url("assets/img/valheim/1.png");
+        background-repeat: no-repeat;
+        background-size: fill;
+        background-position: center;
+      }
+    }
+
+    .sidebar-minecraft {
+      flex: 1;
+      max-width: 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #23272a;
+      border-radius: 10px;
+      opacity: 0.9;
+      backdrop-filter: blur(2px);
+      animation: minecraftImages 12s ease-in-out infinite forwards;
+      background-repeat: no-repeat;
+      background-size: fill;
+      background-position: center;
+    }
+
+    @keyframes minecraftImages {
+      0% {
+        background: url("assets/img/minecraft/1.png");
+        background-repeat: no-repeat;
+        background-size: fill;
+        background-position: center;
+      }
+
+      33% {
+        background: url("assets/img/minecraft/2.png");
+        background-repeat: no-repeat;
+        background-size: fill;
+        background-position: center;
+      }
+
+      66% {
+        background: url("assets/img/minecraft/3.png");
+        background-repeat: no-repeat;
+        background-size: fill;
+        background-position: center;
+      }
+
+      100% {
+        background: url("assets/img/minecraft/1.png");
+        background-repeat: no-repeat;
+        background-size: fill;
+        background-position: center;
+      }
+    }
+
+    .content {
+      flex: 1;
+      max-width: 100%;
+      margin-top: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+
+      .games-wrapper {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        overflow-y: auto;
+
+        .game {
+          flex: 1;
+          width: 30%;
+          max-width: 400px;
+          max-height: 600px;
+          overflow: hidden;
+          margin: 10px 20px;
+          border-radius: 10px;
+          transition: 0.3s all ease-in-out;
+          filter: grayscale(80%);
+
+          .icon {
+            img {
+              display: block;
+              object-fit: cover;
+              object-position: center;
+              max-width: 100%;
+            }
+          }
+
+          &:hover {
+            cursor: pointer;
+            transform: scale(1.02);
+            transition: 0.3s all ease-in-out;
+            filter: grayscale(0%);
+          }
+        }
+      }
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+.phantasia {
+  background-image: url("./assets/img/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  animation: hueShift 20s ease-in-out infinite forwards;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  opacity: 0.6;
+  z-index: 20;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  @keyframes hueShift {
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    10% {
+      filter: hue-rotate(15deg);
+    }
+    20% {
+      filter: hue-rotate(240deg);
+    }
+    30% {
+      filter: hue-rotate(75deg);
+    }
+    40% {
+      filter: hue-rotate(10deg);
+    }
+    50% {
+      filter: hue-rotate(25deg);
+    }
+    60% {
+      filter: hue-rotate(190deg);
+    }
+    70% {
+      filter: hue-rotate(45deg);
+    }
+    80% {
+      filter: hue-rotate(1deg);
+    }
+    90% {
+      filter: hue-rotate(330deg);
+    }
+    100% {
+      filter: hue-rotate(0deg);
+    }
+  }
+}
+
 .splash-screen {
   height: 100vh;
   width: 100vw;
@@ -203,231 +684,6 @@ body {
     100% {
       opacity: 0;
       transform: scale(0.9);
-    }
-  }
-}
-
-header {
-  flex: 1;
-  width: 100%;
-  max-width: 90%;
-  max-height: 60px;
-  border-radius: 10px;
-  margin-top: 30px;
-  padding: 20px 50px;
-  display: flex;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(2px);
-  z-index: 30;
-
-  .logo {
-    flex: 1;
-  }
-
-  .links {
-    flex: 2;
-
-    ul {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      list-style-type: none;
-      justify-content: flex-end;
-
-      li {
-        height: 100%;
-        margin: 0 10px;
-
-        a {
-          display: block;
-          text-decoration: none;
-          outline: none;
-          color: #ececec;
-          transition: 0.1s all ease-in;
-
-          &:hover {
-            cursor: pointer;
-            transition: 0.1s all ease-out;
-            color: $red;
-          }
-        }
-      }
-    }
-  }
-}
-
-footer {
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  max-width: 90%;
-  max-height: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  font-size: 0.7rem;
-  color: #bcbcbc;
-  margin-bottom: 20px;
-  bottom: 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  z-index: 30;
-
-  strong {
-    display: inline-block;
-    margin-left: 5px;
-    color: #fff;
-  }
-}
-
-.phantasia {
-  background-image: url("./assets/img/bg.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  animation: hueShift 20s ease-in-out infinite forwards;
-  height: 100vh;
-  width: 100vw;
-  position: absolute;
-  opacity: 0.6;
-  z-index: 20;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-
-  @keyframes hueShift {
-    0% {
-      filter: hue-rotate(0deg);
-    }
-    10% {
-      filter: hue-rotate(15deg);
-    }
-    20% {
-      filter: hue-rotate(240deg);
-    }
-    30% {
-      filter: hue-rotate(75deg);
-    }
-    40% {
-      filter: hue-rotate(10deg);
-    }
-    50% {
-      filter: hue-rotate(25deg);
-    }
-    60% {
-      filter: hue-rotate(190deg);
-    }
-    70% {
-      filter: hue-rotate(45deg);
-    }
-    80% {
-      filter: hue-rotate(1deg);
-    }
-    90% {
-      filter: hue-rotate(330deg);
-    }
-    100% {
-      filter: hue-rotate(0deg);
-    }
-  }
-}
-
-.home {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: fadeIn 1s ease-in forwards;
-  z-index: 30;
-
-  .content {
-    flex: 1;
-    width: 100%;
-    max-width: 90%;
-    display: flex;
-    z-index: 30;
-
-    .sidebar {
-      flex: 1;
-      max-width: 20%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-
-      button {
-        width: 100%;
-        padding: 10px 10px;
-        margin: 10px 0;
-        border: none;
-        outline: none;
-        border-radius: 5px;
-        color: #ececec;
-        background-color: rgba(0, 0, 0, 0.3);
-        transition: 0.2s all ease-in-out;
-        backdrop-filter: blur(2px);
-        text-transform: uppercase;
-        font-weight: 400;
-        letter-spacing: 1px;
-        font-size: 1rem;
-
-        &:hover {
-          cursor: pointer;
-          transition: 0.2s all ease-in-out;
-          color: #fff;
-          background-color: rgba(223, 65, 60, 0.7);
-        }
-      }
-    }
-
-    .games-wrapper {
-      flex: 1;
-      margin-left: 20px;
-      padding: 20px;
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-      flex-wrap: wrap;
-      overflow-y: auto;
-
-      .game {
-        flex: 1;
-        max-width: 25%;
-        max-height: 500px;
-        overflow: hidden;
-        margin: 10px 0;
-        border-radius: 10px;
-        transition: 0.3s all ease-in-out;
-        filter: grayscale(80%);
-
-        .icon {
-          img {
-            display: block;
-            object-fit: cover;
-            object-position: center;
-            max-width: 100%;
-          }
-        }
-
-        &:hover {
-          cursor: pointer;
-          transform: scale(1.02);
-          transition: 0.3s all ease-in-out;
-          filter: grayscale(0%);
-        }
-      }
-    }
-  }
-
-  @keyframes fadeIn {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
     }
   }
 }
