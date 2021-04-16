@@ -1,7 +1,7 @@
 {
   "name": "spawnhouse-launcher",
   "productName": "ReSpawn",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "ReSpawn description",
   "main": "src/index.js",
   "scripts": {
@@ -57,6 +57,7 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.54",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
-    "electron": "12.0.2"
+    "electron": "12.0.2",
+    "eslint": "^7.24.0"
   }
 }
