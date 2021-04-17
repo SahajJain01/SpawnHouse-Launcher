@@ -10,9 +10,10 @@ const path = require('path');
 const request = require('superagent');
 const fs = require('fs');
 const admZip = require('adm-zip');
-const exec = require('child_process');
+const { exec } = require('child_process');
 const execFile = require('child_process').execFile;
 const regedit = require('regedit');
+const { ok } = require('assert');
 //#endregion Requires
 
 //#region Global variables and constants
@@ -69,13 +70,13 @@ const createAppWindow = () => {
 			contextIsolation: true, // protect against prototype pollution
 			enableRemoteModule: false, // turn off remote
 			preload: path.join(__dirname, 'appPreload.js'), // use a preload script
-			devTools: true,
+			devTools: false,
 			backgroundColor: '#1c1c1c',
 		},
 	});
 	appWindow.setMenu(null),
 	appWindow.loadFile(path.join(__dirname, 'app.html'));
-	appWindow.webContents.openDevTools();
+	//appWindow.webContents.openDevTools();
 };
 const createUpdateWindow = () => {
 	// Create the browser window.
@@ -187,7 +188,7 @@ ipcMain.on('downloadGameReq', (event, args) => {
 
 ipcMain.on('extractGameReq', (event, args) => {
 	var zip = new admZip(gameList[args.gameId].name + '.zip');
-	zip.extractAllTo('./' + gameList[args.gameId].name, true, (error) => {
+	zip.extractAllToAsync('./' + gameList[args.gameId].name, true, (error) => {
 		if(error) {
 			event.reply('extractGameRes', 
 				{
@@ -281,10 +282,12 @@ function installMumble() {
 			'HKCU\\SOFTWARE\\Mumble\\Mumble\\audio'
 		],
 		function (err) {
-			return {
-				'status':500,
-				'data': err
-			};
+			if(err) {
+				return {
+					'status':500,
+					'data': err
+				};
+			}
 		});
 
 	regedit.putValue(
@@ -297,10 +300,13 @@ function installMumble() {
 			},
 		},
 		function (err) {
-			return {
-				'status':500,
-				'data': err
-			};
+			if(err) {
+				return {
+					'status':500,
+					'data': err
+				};
+			}
+			
 		}
 	);
 	regedit.putValue(
@@ -349,10 +355,13 @@ function installMumble() {
 			},
 		},
 		function (err) {
-			return {
-				'status':500,
-				'data': err
-			};
+			if(err) {
+				return {
+					'status':500,
+					'data': err
+				};
+			}
+			
 		}
 	);
 	return {
@@ -380,11 +389,6 @@ function installMinecraft() {
 					'status':500,
 					'data': err
 				};
-			} else {
-				return {
-					'status':200,
-					'data': 'ok'
-				};
 			}
 		}
 	);
@@ -397,17 +401,21 @@ function installMinecraft() {
 					'status':500,
 					'data': err
 				};
-			} else {
-				return {
-					'status':200,
-					'data': 'ok'
-				};
 			}
 		}
 	);
+	return {
+		'status':200,
+		'data': 'ok'
+	};
 }
 
-function installValheim() {}
+function installValheim() {
+	return {
+		'status':200,
+		'data': 'ok'
+	};
+}
 
 //#endregion Install methods
 
@@ -424,36 +432,26 @@ function playMumble(params) {
     + '/' + gameList[params.gameId].name,
 		function (err) {
 			if(err) {
-				return {
-					'status':500,
-					'data': err
-				};
-			}
-			else {
-				return {
-					'status':200,
-					'data': 'ok'
-				};
+				console.log(err);
 			}
 		}
 	);
+	return {
+		'status':200,
+		'data': 'ok'
+	};
 }
 
 function playMinecraft() {
 	execFile('./' + gameList[1].name + '/TLauncher.exe', function (err, data) {
 		if(err) {
-			return {
-				'status':500,
-				'data': err
-			};
-		}
-		else {
-			return {
-				'status':200,
-				'data': data.toString()
-			};
+			console.log(err);
 		}
 	});
+	return {
+		'status':200,
+		'data': 'ok'
+	};
 }
 
 function playValheim() {
@@ -467,29 +465,27 @@ function playValheim() {
 					'data': err
 				};
 			}
-			else {
-				return {
-					'status':200,
-					'data': data.toString()
-				};
-			}
 		}
 	);
+	return {
+		'status':200,
+		'data': 'ok'
+	};
 }
 //#endregion Play methods
 
 //#region Game Installed methods
 function isMumbleInstalled() {
-	if(Math.random()%2 == 0) {
+	if (fs.existsSync('./'+ gameList[0].name +'/mumble.exe')) {
 		return {
-			'status':500,
-			'data': 'err'
+			'status':200,
+			'data': 'ok'
 		};
 	}
 	else {
 		return {
-			'status':200,
-			'data': 'ok'
+			'status':500,
+			'data': 'err'
 		};
 	}
 }

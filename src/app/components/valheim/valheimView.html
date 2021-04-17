@@ -14,33 +14,16 @@
       <div class="game-options">
         <div class="col-xl">
           <div class="option">
-            <input type="checkbox" id="box-1" />
-            <label for="box-1">Game Option Label</label>
-          </div>
-          <div class="option">
-            <input type="checkbox" id="box-2" />
-            <label for="box-2">Game Option Label</label>
-          </div>
-          <div class="option">
-            <input type="checkbox" id="box-3" />
-            <label for="box-3">Game Option Label</label>
-          </div>
-          <div class="option">
-            <input type="checkbox" id="box-4" />
-            <label for="box-4">Game Option Label</label>
-          </div>
-          <div class="option">
-            <input type="checkbox" id="box-5" />
-            <label for="box-5">Game Option Label</label>
-          </div>
-          <div class="option">
-            <input type="checkbox" id="box-6" />
-            <label for="box-6">Game Option Label</label>
+            <input type="checkbox" id="box-1" ng-model="mumbleChecked"/>
+            <label for="box-1">Launch Mumble for proximity voice chat (Recommended)</label>
+            <input type="textbox" id="textbox-1" ng-if="mumbleChecked" ng-model="mumbleUserName"/>
+            <label for="box-1">Mumble UserName</label>
           </div>
         </div>
         <div class="col">
-          <button ng-click="install()">Download and Install</button>
-          <button ng-click="reg()">Mumble</button>
+          {{statusList[statusId]}}
+          <button ng-if="statusId <= 5" ng-click="download()" ng-disabled="statusId > 1">Download</button>
+          <button ng-if="statusId >= 6" ng-click="play()">Play</button>
         </div>
       </div>
     </div>

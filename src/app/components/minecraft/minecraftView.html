@@ -23,9 +23,9 @@
           </div>
         </div>
         <div class="col">
-          {{statusText}}
-          <button ng-if="1" ng-click="download()">Download</button>
-          <button ng-if="1" ng-click="play()">Play</button>
+          {{statusList[statusId]}}
+          <button ng-if="statusId <= 5" ng-click="download()" ng-disabled="statusId > 1">Download</button>
+          <button ng-if="statusId >= 6" ng-click="play()">Play</button>
         </div>
       </div>
     </div>
