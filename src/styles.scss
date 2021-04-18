@@ -14,6 +14,8 @@ html {
 }
 
 body {
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
   padding: 0;
   margin: 0;
   font-family: "Poppins", sans-serif;
@@ -34,12 +36,14 @@ header {
   padding: 20px 50px;
   display: flex;
   align-items: center;
+
   // background-color: rgba(0, 0, 0, 0.3);
   // backdrop-filter: blur(2px);
   z-index: 30;
 
   .logo {
     flex: 1;
+    -webkit-app-region: no-drag;
     max-height: 60px;
     max-width: 200px;
     display: flex;
@@ -52,6 +56,10 @@ header {
       display: block;
       height: 60px;
       margin-right: 10px;
+    }
+
+    &:hover {
+      cursor: pointer;
     }
   }
 
@@ -68,12 +76,13 @@ header {
 
       li {
         height: 100%;
-        margin: 0 10px;
+        margin: 0;
+        -webkit-app-region: no-drag;
 
         a {
           width: 150px;
-          padding: 10px 30px;
-          margin-left: 5px;
+          padding: 5px 10px;
+          margin-left: 2px;
           border: none;
           outline: none;
           border-radius: 5px;
@@ -100,6 +109,7 @@ header {
 
 footer {
   flex: 1;
+  position: sticky;
   width: 100%;
   height: 100%;
   max-width: 95%;
@@ -134,8 +144,8 @@ footer {
   .content {
     flex: 1;
     width: 100%;
-    max-width: 95%;
-    margin-top: 40px;
+    max-width: 100%;
+    margin-top: 0px;
     display: flex;
     z-index: 30;
 
@@ -214,10 +224,9 @@ footer {
       .game-options {
         flex: 1;
         display: flex;
-        padding: 15px;
 
         .col-xl {
-          flex: 2;
+          flex: 1;
           padding-top: 60px;
           display: flex;
           flex-direction: column;
@@ -233,31 +242,62 @@ footer {
           button {
             outline: none;
             border: none;
+            text-align: center;
+            white-space: normal;
             border-radius: 10px;
             margin: 10px 0;
-            padding: 15px 0;
+            padding: 10px 0;
             background: $orange;
             color: #fff;
             width: 80%;
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 1px;
             transition: 0.2s all ease-in-out;
+            -webkit-app-region: no-drag;
 
             &:hover {
               background: $red;
               transition: 0.2s all ease-in-out;
             }
           }
+
+          .disabled {
+            background: #4c4c4c;
+            color: #ececec;
+
+            &:hover {
+              cursor: default;
+              background: #4c4c4c;
+            }
+          }
         }
 
         .option {
+          -webkit-app-region: no-drag;
           height: 40px;
+          margin-bottom: 15px;
           display: flex;
           align-items: center;
 
+          input[type="text"] {
+            border-radius: 10px;
+            outline: none;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 3px 5px;
+            color: #ececec;
+            border: 1px solid #4c4c4c;
+            margin: 15px;
+            transition: 0.2s all ease-in-out;
+
+            &:focus {
+              transition: 0.2s all ease-in-out;
+              border: 1px solid $orange;
+            }
+          }
+
           input[type="checkbox"] {
+            -webkit-app-region: no-drag;
             display: none;
           }
 
@@ -409,13 +449,15 @@ footer {
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
+        overflow: hidden;
         overflow-y: auto;
 
         .game {
+          -webkit-app-region: no-drag;
           flex: 1;
           width: 30%;
-          max-width: 400px;
-          max-height: 600px;
+          max-width: 350px;
+          max-height: 500px;
           overflow: hidden;
           margin: 10px 20px;
           border-radius: 10px;
@@ -428,6 +470,8 @@ footer {
               object-fit: cover;
               object-position: center;
               max-width: 100%;
+              height: auto;
+              -webkit-user-drag: none;
             }
           }
 

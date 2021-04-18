@@ -1,38 +1,38 @@
-
-const {
-	contextBridge,
-	ipcRenderer
-} = require('electron');
+const { contextBridge, ipcRenderer } = require("electron");
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
-contextBridge.exposeInMainWorld(
-	'api', {
-		send: (channel, data) => {
-			// whitelist channels
-			let validChannels = [
-				'downloadGameReq'
-				,'extractGameReq'
-				,'installGameReq'
-				,'playGameReq'
-				,'isGameInstalledReq'
-			];
-			if (validChannels.includes(channel)) {
-				ipcRenderer.send(channel, data);
-			}
-		},
-		receive: (channel, func) => {
-			let validChannels = [
-				'downloadGameRes'
-				,'extractGameRes'
-				,'installGameRes'
-				,'playGameRes'
-				,'isGameInstalledRes'
-			];
-			if (validChannels.includes(channel)) {
-				// Deliberately strip event as it includes `sender` 
-				ipcRenderer.once(channel, (event, ...args) => func(...args));
-			}
-		}
-	}
-);
+contextBridge.exposeInMainWorld("api", {
+  send: (channel, data) => {
+    // whitelist channels
+    let validChannels = [
+      "downloadGameReq",
+      "extractGameReq",
+      "installGameReq",
+      "playGameReq",
+      "isGameInstalledReq",
+      "appQuitReq",
+      "appMinimiseReq",
+      "appMaximiseReq",
+    ];
+    if (validChannels.includes(channel)) {
+      ipcRenderer.send(channel, data);
+    }
+  },
+  receive: (channel, func) => {
+    let validChannels = [
+      "downloadGameRes",
+      "extractGameRes",
+      "installGameRes",
+      "playGameRes",
+      "isGameInstalledRes",
+      "appQuitRes",
+      "appMinimiseRes",
+      "appMaximiseRes",
+    ];
+    if (validChannels.includes(channel)) {
+      // Deliberately strip event as it includes `sender`
+      ipcRenderer.once(channel, (event, ...args) => func(...args));
+    }
+  },
+});

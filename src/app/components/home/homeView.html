@@ -1,16 +1,22 @@
 <section class="home">
   <header>
-    <div class="logo" ui-sref="home.library"><img src="assets/img/logo.png" alt="" /> ReSpawn</div>
-    <!-- <div class="links">
+    <div class="logo" ui-sref="home.library">
+      <img src="assets/img/logo.png" alt="" /> ReSpawn
+    </div>
+    <div class="links">
       <ul>
-        <li><a>Uninstall</a></li>
-        <li><a>Repair</a></li>
-        <li><a>Log In</a></li>
+        <li>
+          <a onclick="window.api.send('appMinimiseReq', 'data')">&#8213;</a>
+        </li>
+        <li>
+          <a onclick="window.api.send('appMaximiseReq', 'data')">&#10064;</a>
+        </li>
+        <li><a onclick="window.api.send('appQuitReq', 'data')">X</a></li>
       </ul>
-    </div> -->
+    </div>
   </header>
 
-  <ui-view></ui-view>
+  <ui-view style="flex: 1; display: flex; padding: 20px; width: 100%"></ui-view>
 
   <footer>ReSpawn v1.0.6 by <strong>SpawnHouse</strong></footer>
   <div class="phantasia"></div>

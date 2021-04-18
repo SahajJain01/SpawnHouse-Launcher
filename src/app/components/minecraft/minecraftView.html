@@ -16,18 +16,39 @@
       <div class="game-options">
         <div class="col-xl">
           <div class="option">
-            <input type="checkbox" id="box-1" ng-model="mumble.checked"/>
-            <label for="box-1">Launch Mumble for proximity voice chat (Recommended)</label>
-          </div>
-          <div class="option">
-            <input type="textbox" id="textbox-1" ng-if="mumble.checked" ng-model="mumble.userName"/>
-            <label for="box-1" ng-if="mumble.checked">Mumble UserName</label>
+            <input type="checkbox" id="box-1" ng-model="mumble.checked" />
+            <label for="box-1"
+              >Launch Mumble for proximity voice chat (Recommended)
+              <div class="option" ng-if="mumble.checked">
+                Username:
+                <input
+                  type="text"
+                  id="textbox-1"
+                  ng-if="mumble.checked"
+                  ng-model="mumble.userName"
+                />
+              </div>
+            </label>
           </div>
         </div>
         <div class="col">
-          {{statusList[statusId]}}
-          <button ng-if="statusId <= 5" ng-click="download()" ng-disabled="statusId > 1">Download</button>
-          <button ng-if="statusId >= 6" ng-disabled="statusId >= 9 && statusId <=11" ng-click="play()">Play</button>
+          <button
+            ng-if="statusId <= 5"
+            ng-class="{disabled:statusId > 1}"
+            ng-click="download()"
+            ng-disabled="statusId > 1"
+          >
+            {{statusList[statusId]}}
+          </button>
+
+          <button
+            ng-class="{disabled:statusId >= 9 && statusId <=11}"
+            ng-if="statusId >= 6"
+            ng-disabled="statusId >= 9 && statusId <=11"
+            ng-click="play()"
+          >
+            {{statusList[statusId]}}
+          </button>
         </div>
       </div>
     </div>
