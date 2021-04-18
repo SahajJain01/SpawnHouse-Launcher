@@ -22,11 +22,19 @@
       "packagerConfig": {
         "icon": "logo.ico"
       },
+      "electronPackagerConfig": {
+        "icon": "logo.ico"
+      },
+      "electronWinstallerConfig": {
+        "name": "ReSpawn",
+        "setupIcon": "logo.ico"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "ReSpawn"
+            "name": "ReSpawn",
+            "setupIcon": "logo.ico"
           }
         },
         {
