@@ -16,6 +16,8 @@ const updateServer = 'https://appupdate.spawnhouse.com';
 const url = `${updateServer}/update/${process.platform}/${app.getVersion()}`;
 autoUpdater.setFeedURL({ url });
 
+regedit.setExternalVBSLocation('./resources/vbs');
+
 const gameList = [
 	{
 		id: 0,
@@ -182,6 +184,9 @@ ipcMain.on('appMaximiseReq', (event, args) => {
 });
 
 ipcMain.on('downloadGameReq', (event, args) => {
+	if (!fs.existsSync('../../ReSpawnCache')) {
+		fs.mkdirSync('../../ReSpawnCache');
+	}
 	request
 		.get(gameList[args.gameId].feedUrl)
 		.on('error', function (error) {
@@ -190,7 +195,7 @@ ipcMain.on('downloadGameReq', (event, args) => {
 				data: error,
 			});
 		})
-		.pipe(fs.createWriteStream(gameList[args.gameId].name + '.zip'))
+		.pipe(fs.createWriteStream('../../ReSpawnCache/' + gameList[args.gameId].name + '.zip'))
 		.on('finish', function (data) {
 			event.reply('downloadGameRes', {
 				status: 200,
@@ -200,8 +205,8 @@ ipcMain.on('downloadGameReq', (event, args) => {
 });
 
 ipcMain.on('extractGameReq', (event, args) => {
-	var zip = new admZip(gameList[args.gameId].name + '.zip');
-	zip.extractAllToAsync('./' + gameList[args.gameId].name, true, (error) => {
+	var zip = new admZip('../../ReSpawnCache/' + gameList[args.gameId].name + '.zip');
+	zip.extractAllToAsync('../../ReSpawnCache/' + gameList[args.gameId].name, true, (error) => {
 		if (error) {
 			event.reply('extractGameRes', {
 				status: 500,
@@ -285,6 +290,22 @@ ipcMain.on('isGameInstalledReq', (event, args) => {
 
 //#region Install methods
 function installMumble() {
+	regedit.createKey(
+		[
+			'HKCU\\SOFTWARE\\Mumble',
+			'HKCU\\SOFTWARE\\Mumble\\Mumble',
+			'HKCU\\SOFTWARE\\Mumble\\Mumble\\audio',
+		],
+		function (err) {
+			if (err) {
+				return {
+					status: 500,
+					data: err,
+				};
+			}
+		}
+	);
+
 	regedit.createKey(
 		[
 			'HKCU\\SOFTWARE\\Mumble',
@@ -538,7 +559,7 @@ function installMinecraft() {
 		fs.mkdirSync(gameList[1].customParams.minecraftPath + '/mods');
 	}
 	fs.copyFile(
-		'./' + gameList[1].name + '/mumblelink.jar',
+		'../../ReSpawnCache/' + gameList[1].name + '/mumblelink.jar',
 		gameList[1].customParams.minecraftPath + '/mods/mumblelink.jar',
 		(err) => {
 			if (err) {
@@ -550,7 +571,7 @@ function installMinecraft() {
 		}
 	);
 	fs.copyFile(
-		'./' + gameList[1].name + 'tlauncher-2.0.properties',
+		'../../ReSpawnCache/' + gameList[1].name + '/tlauncher-2.0.properties',
 		gameList[1].customParams.tlauncherPath + '/tlauncher-2.0.properties',
 		(err) => {
 			if (err) {
@@ -580,7 +601,7 @@ function installValheim() {
 function playMumble(params) {
 	exec(
 		process.cwd() +
-      '/' +
+      '/../../ReSpawnCache/' +
       gameList[0].name +
       '/mumble.exe mumble://' +
       params.userName +
@@ -601,7 +622,7 @@ function playMumble(params) {
 }
 
 function playMinecraft() {
-	execFile('./' + gameList[1].name + '/TLauncher.exe', function (err, data) {
+	execFile('../../ReSpawnCache/' + gameList[1].name + '/TLauncher.exe', function (err, data) {
 		if (err) {
 			console.log(err);
 		}
@@ -614,7 +635,7 @@ function playMinecraft() {
 
 function playValheim() {
 	execFile(
-		'./' + gameList[2].name + '/valheim.exe',
+		'../../ReSpawnCache/' + gameList[2].name + '/valheim.exe',
 		['+connect', gameList[2].customParams.serverUrl],
 		function (err, data) {
 			if (err) {
@@ -634,7 +655,7 @@ function playValheim() {
 
 //#region Game Installed methods
 function isMumbleInstalled() {
-	if (fs.existsSync('./' + gameList[0].name + '/mumble.exe')) {
+	if (fs.existsSync('../../ReSpawnCache/' + gameList[0].name + '/mumble.exe')) {
 		return {
 			status: 200,
 			data: 'ok',
@@ -652,10 +673,8 @@ function isMinecraftInstalled() {
 		fs.existsSync(
 			gameList[1].customParams.minecraftPath + '/mods/mumblelink.jar'
 		) &&
-    fs.existsSync(
-    	gameList[1].customParams.tlauncherPath + '/tlauncher-2.0.properties'
-    ) &&
-    fs.existsSync('./' + gameList[1].name + '/TLauncher.exe')
+    fs.existsSync(gameList[1].customParams.tlauncherPath + '/tlauncher-2.0.properties') &&
+    fs.existsSync('../../ReSpawnCache/' + gameList[1].name + '/TLauncher.exe')
 	) {
 		return {
 			status: 200,
@@ -670,7 +689,7 @@ function isMinecraftInstalled() {
 }
 
 function isValheimInstalled() {
-	if (fs.existsSync('./' + gameList[2].name + '/valheim.exe')) {
+	if (fs.existsSync('../../ReSpawnCache/' + gameList[2].name + '/valheim.exe')) {
 		return {
 			status: 200,
 			data: 'ok',
