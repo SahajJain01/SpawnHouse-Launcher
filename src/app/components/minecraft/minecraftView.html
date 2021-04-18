@@ -19,16 +19,13 @@
             <input type="checkbox" id="box-1" ng-model="mumble.checked" />
             <label for="box-1"
               >Launch Mumble for proximity voice chat (Recommended)
-              <div class="option" ng-if="mumble.checked">
-                Username:
-                <input
-                  type="text"
-                  id="textbox-1"
-                  ng-if="mumble.checked"
-                  ng-model="mumble.userName"
-                />
-              </div>
             </label>
+          </div>
+          <div class="option" style="padding-left: 35px">
+            <div class="option" ng-if="mumble.checked">
+              Username:
+              <input type="text" id="textbox-1" ng-model="mumble.userName" />
+            </div>
           </div>
         </div>
         <div class="col">

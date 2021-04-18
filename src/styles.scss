@@ -14,16 +14,16 @@ html {
 }
 
 body {
-  -webkit-user-select: none;
-  -webkit-app-region: drag;
   padding: 0;
-  margin: 0;
+  margin: 2px;
   font-family: "Poppins", sans-serif;
   background-color: $notblack;
   color: $white;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
 }
 
 header {

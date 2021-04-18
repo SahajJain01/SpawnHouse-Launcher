@@ -70,7 +70,7 @@ const createAppWindow = () => {
       contextIsolation: true, // protect against prototype pollution
       enableRemoteModule: false, // turn off remote
       preload: path.join(__dirname, "appPreload.js"), // use a preload script
-      devTools: false,
+      devTools: true,
       backgroundColor: "#1c1c1c",
     },
   });
