@@ -70,13 +70,13 @@ const createAppWindow = () => {
 			contextIsolation: true, // protect against prototype pollution
 			enableRemoteModule: false, // turn off remote
 			preload: path.join(__dirname, 'appPreload.js'), // use a preload script
-			devTools: false,
+			devTools: true,
 			backgroundColor: '#1c1c1c',
 		},
 	});
 	appWindow.setMenu(null),
 	appWindow.loadFile(path.join(__dirname, 'app.html'));
-	//appWindow.webContents.openDevTools();
+	appWindow.webContents.openDevTools();
 };
 const createUpdateWindow = () => {
 	// Create the browser window.

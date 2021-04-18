@@ -1,11 +1,8 @@
 // eslint-disable-next-line no-undef
-angular.module('app').controller('minecraftController', function ($scope, $http) {
+angular.module('app').controller('minecraftController', function ($scope, $http, gameManagerService) {
 	$scope.statusId = 1;
 	$scope.mumbleUserName = 'User' + Math.floor(Math.random() * 999) + 1;
 	$scope.mumbleChecked = true;
-
-
-	var selectedGameId = 1;
 
 	$scope.statusList = [
 		'Error',
@@ -15,111 +12,125 @@ angular.module('app').controller('minecraftController', function ($scope, $http)
 		'Installing',
 		'Installed',
 		'Playable',
-		'Starting',
-		'Started'
+		'Starting Game',
+		'Started',
+		'Downloading Mumble',
+		'Extracting Mumble',
+		'Installing Mumble',
+		'Mumble Installed',
+		'Starting Mumble'
 	];
-
-	//#region Main API Listeners
-	window.api.receive('downloadGameRes', (res) => {
-		if(res.status == 200) {
-			$scope.$apply(function() {
-				$scope.statusId = 3;
-			});
-			window.api.send('extractGameReq', {'gameId': selectedGameId});
-		}
-		else {
-			$scope.$apply(function() {
-				$scope.statusId = 0;
-				console.log('Error('+res.status+'): ' + res.data);
-			});
-		}
-	});
-	window.api.receive('extractGameRes', (res) => {
-		if(res.status == 200) {
-			$scope.$apply(function() {
-				$scope.statusId = 4;
-			});
-			window.api.send('installGameReq', {'gameId': selectedGameId});
-		}
-		else {
-			$scope.$apply(function() {
-				$scope.statusId = 0;
-				console.log('Error('+res.status+'): ' + res.data);
-			});
-		}
-	});
-	window.api.receive('installGameRes', (res) => {
-		if(res.status == 200) {
-			$scope.$apply(function() {
-				$scope.statusId = 5;
-			});
-			isSelectedGameInstalled(selectedGameId);
-		}
-		else {
-			$scope.$apply(function() {
-				$scope.statusId = 0;
-				console.log('Error('+res.status+'): ' + res.data);
-			});
-		}
-	});
-	window.api.receive('isGameInstalledRes', (res) => {
-		if(res.status == 200) {
-			$scope.$apply(function() {
-				$scope.statusId = 6;
-			});
-			if(selectedGameId == 0) {
-				$scope.statusId = 7;
-				window.api.send('playGameReq', {
-					'gameId': 0,
-					'params': {
-						'gameId': 1,
-						'userName': $scope.mumbleUserName
-					}
-				});
-				window.api.send('playGameReq', {'gameId': 1});
-			}
-		}
-		else {
-			$scope.$apply(function() {
-				$scope.statusId = 1;
-			});
-			if(selectedGameId == 0) {
-				$scope.$apply(function() {
-					$scope.statusId = 2;
-				});
-				window.api.send('downloadGameReq', {'gameId': selectedGameId});
-			}
-		}	
-	});
-	window.api.receive('playGameRes', (res) => {
-		if(res.status == 200) {
-			$scope.$apply(function() {
-				$scope.statusId = 8;
-			});
-		}
-		else {
-			$scope.$apply(function() {
-				$scope.statusId = 0;
-				console.log('Error('+res.status+'): ' + res.data);
-			});
-		}	
-	});
-	//#endregion Main API Listeners
 
 	$scope.download = function () {
 		$scope.statusId = 2;
-		selectedGameId = 1;
-		window.api.send('downloadGameReq', {'gameId': selectedGameId});
+		gameManagerService.downloadGame({'gameId': 1})
+			.then(() => {
+				$scope.statusId = 3;
+				gameManagerService.extractGame({'gameId': 1})
+					.then(() => {
+						$scope.statusId = 4;
+						gameManagerService.installGame({'gameId': 1})
+							.then(() => {
+								$scope.statusId = 5;
+								isMinecraftInstalled();
+							},(err) => {
+								console.log(err);
+							});
+					},(err) => {
+						console.log(err);
+					});
+			},(err) => {
+				console.log(err);
+			});
 	};
 
 	$scope.play = function () {
 		if($scope.mumbleChecked) {
-			selectedGameId = 0;
-			isSelectedGameInstalled(selectedGameId);
+			gameManagerService.isGameInstalled({'gameId': 0})
+				.then(() => {
+					$scope.statusId = 13;
+					gameManagerService.playGame({
+						'gameId': 0,
+						'params': {
+							'gameId': 1,
+							'userName': $scope.mumbleUserName
+						}
+					})
+						.then(() => {
+							$scope.statusId = 7;
+							gameManagerService.playGame({'gameId': 1})
+								.then(() => {
+									$scope.statusId = 8;
+								},(err) => {
+									console.log(err);
+								});
+						},(err) => {
+							if(err.status == 400) {
+								console.log(err);
+							}
+						});
+				},(err) => {
+					if(err.status == 400) {
+						console.log(err);
+					} else if (err.status == 500) {
+						$scope.statusId = 9;
+						gameManagerService.downloadGame({'gameId': 0})
+							.then(() => {
+								$scope.statusId = 10;
+								gameManagerService.extractGame({'gameId': 0})
+									.then(() => {
+										$scope.statusId = 11;
+										gameManagerService.installGame({'gameId': 0})
+											.then(() => {
+												$scope.statusId = 5;
+												gameManagerService.isGameInstalled({'gameId': 0})
+													.then(() => {
+														$scope.statusId = 13;
+														gameManagerService.playGame({
+															'gameId': 0,
+															'params': {
+																'gameId': 1,
+																'userName': $scope.mumbleUserName
+															}
+														})
+															.then(() => {
+																$scope.statusId = 7;
+																gameManagerService.playGame({'gameId': 1})
+																	.then(() => {
+																		$scope.statusId = 8;
+																	},(err) => {
+																		console.log(err);
+																	});
+															},(err) => {
+																if(err.status == 400) {
+																	console.log(err);
+																}
+															});
+													},(err) => {
+														if(err.status == 400) {
+															console.log(err);
+														}
+													});
+											},(err) => {
+												console.log(err);
+											});
+									},(err) => {
+										console.log(err);
+									});
+							},(err) => {
+								console.log(err);
+							});
+					}
+				});
 		}
 		else {
 			$scope.statusId = 7;
-			window.api.send('playGameReq', {'gameId': 1}); 
+			gameManagerService.playGame({'gameId': 1})
+				.then(() => {
+					$scope.statusId = 8;
+				},(err) => {
+					console.log(err);
+				});
 		}
 	};
 
@@ -131,10 +142,17 @@ angular.module('app').controller('minecraftController', function ($scope, $http)
 			});
 	}
 
-	function isSelectedGameInstalled() {
-		window.api.send('isGameInstalledReq', {'gameId': selectedGameId});
+	function isMinecraftInstalled() {
+		gameManagerService.isGameInstalled({'gameId': 1})
+			.then(() => {
+				$scope.statusId = 6;
+			},(err) => {
+				if(err.status == 400) {
+					console.log(err);
+				}
+			});
 	}
 
 	fetchStats();
-	isSelectedGameInstalled(1);
+	isMinecraftInstalled();
 });
