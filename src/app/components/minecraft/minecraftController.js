@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-undef
 angular.module('app').controller('minecraftController', function ($scope, $http, gameManagerService) {
 	$scope.statusId = 1;
-	$scope.mumbleUserName = 'User' + Math.floor(Math.random() * 999) + 1;
-	$scope.mumbleChecked = true;
+	$scope.mumble = {};
+	$scope.mumble.userName = 'User' + Math.floor(Math.random() * 999) + 1;
+	$scope.mumble.checked = true;
 
 	$scope.statusList = [
 		'Error',
@@ -45,7 +46,7 @@ angular.module('app').controller('minecraftController', function ($scope, $http,
 	};
 
 	$scope.play = function () {
-		if($scope.mumbleChecked) {
+		if($scope.mumble.checked) {
 			gameManagerService.isGameInstalled({'gameId': 0})
 				.then(() => {
 					$scope.statusId = 13;
@@ -53,7 +54,7 @@ angular.module('app').controller('minecraftController', function ($scope, $http,
 						'gameId': 0,
 						'params': {
 							'gameId': 1,
-							'userName': $scope.mumbleUserName
+							'userName': $scope.mumble.userName
 						}
 					})
 						.then(() => {
@@ -90,7 +91,7 @@ angular.module('app').controller('minecraftController', function ($scope, $http,
 															'gameId': 0,
 															'params': {
 																'gameId': 1,
-																'userName': $scope.mumbleUserName
+																'userName': $scope.mumble.userName
 															}
 														})
 															.then(() => {

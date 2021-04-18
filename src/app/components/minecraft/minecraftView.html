@@ -16,16 +16,18 @@
       <div class="game-options">
         <div class="col-xl">
           <div class="option">
-            <input type="checkbox" id="box-1" ng-model="mumbleChecked"/>
+            <input type="checkbox" id="box-1" ng-model="mumble.checked"/>
             <label for="box-1">Launch Mumble for proximity voice chat (Recommended)</label>
-            <input type="textbox" id="textbox-1" ng-if="mumbleChecked" ng-model="mumbleUserName"/>
-            <label for="box-1">Mumble UserName</label>
+          </div>
+          <div class="option">
+            <input type="textbox" id="textbox-1" ng-if="mumble.checked" ng-model="mumble.userName"/>
+            <label for="box-1" ng-if="mumble.checked">Mumble UserName</label>
           </div>
         </div>
         <div class="col">
           {{statusList[statusId]}}
           <button ng-if="statusId <= 5" ng-click="download()" ng-disabled="statusId > 1">Download</button>
-          <button ng-if="statusId >= 6" ng-click="play()">Play</button>
+          <button ng-if="statusId >= 6" ng-disabled="statusId >= 9 && statusId <=11" ng-click="play()">Play</button>
         </div>
       </div>
     </div>
