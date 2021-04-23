@@ -9,6 +9,7 @@ const { exec } = require('child_process');
 const execFile = require('child_process').execFile;
 const regedit = require('regedit');
 const { ok } = require('assert');
+const log = require('electron-log');
 //#endregion Requires
 
 //#region Global variables and constants
@@ -16,7 +17,7 @@ const updateServer = 'https://appupdate.spawnhouse.com';
 const url = `${updateServer}/update/${process.platform}/${app.getVersion()}`;
 autoUpdater.setFeedURL({ url });
 
-regedit.setExternalVBSLocation('./resources/vbs');
+regedit.setExternalVBSLocation(process.cwd() + '/resources/vbs');
 
 const gameList = [
 	{
@@ -224,7 +225,7 @@ ipcMain.on('extractGameReq', (event, args) => {
 ipcMain.on('installGameReq', (event, args) => {
 	switch (args.gameId) {
 	case 0:
-		event.reply('installGameRes', installMumble());
+		installMumble(event);
 		break;
 
 	case 1:
@@ -289,263 +290,70 @@ ipcMain.on('isGameInstalledReq', (event, args) => {
 //#endregion IPC Listeners
 
 //#region Install methods
-function installMumble() {
-	regedit.createKey(
-		[
-			'HKCU\\SOFTWARE\\Mumble',
-			'HKCU\\SOFTWARE\\Mumble\\Mumble',
-			'HKCU\\SOFTWARE\\Mumble\\Mumble\\audio',
-		],
-		function (err) {
-			if (err) {
-				return {
-					status: 500,
-					data: err,
-				};
+function installMumble(event) {
+	var values = {
+		'HKCU\\SOFTWARE\\Mumble\\Mumble': {
+			lastupdate: {
+				type: 'REG_DWORD',
+				value: 2,
 			}
-		}
-	);
-
-	regedit.createKey(
-		[
-			'HKCU\\SOFTWARE\\Mumble',
-			'HKCU\\SOFTWARE\\Mumble\\Mumble',
-			'HKCU\\SOFTWARE\\Mumble\\Mumble\\audio',
-		],
-		function (err) {
-			if (err) {
-				return {
-					status: 500,
-					data: err,
-				};
-			}
-		}
-	);
-
-	regedit.putValue(
-		{
-			'HKCU\\SOFTWARE\\Mumble\\Mumble': {
-				lastupdate: {
-					type: 'REG_DWORD',
-					value: 2,
-				},
-			},
 		},
-		function (err) {
-			if (err) {
-				return {
-					status: 500,
-					data: err,
-				};
-			}
-		}
-	);
-	regedit.putValue(
-		{
-			'HKCU\\SOFTWARE\\Mumble\\Mumble\\audio': {
-				vadsource: {
-					type: 'REG_DWORD',
-					value: 1,
-				},
-				vadmin: {
-					type: 'REG_BINARY',
-					value: [
-						64,
-						0,
-						86,
-						0,
-						97,
-						0,
-						114,
-						0,
-						105,
-						0,
-						97,
-						0,
-						110,
-						0,
-						116,
-						0,
-						40,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						135,
-						0,
-						63,
-						0,
-						76,
-						0,
-						205,
-						0,
-						154,
-						0,
-						41,
-						0,
-					],
-				},
-				vadmax: {
-					type: 'REG_BINARY',
-					value: [
-						64,
-						0,
-						86,
-						0,
-						97,
-						0,
-						114,
-						0,
-						105,
-						0,
-						97,
-						0,
-						110,
-						0,
-						116,
-						0,
-						40,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						135,
-						0,
-						63,
-						0,
-						122,
-						0,
-						225,
-						0,
-						246,
-						0,
-						41,
-						0,
-					],
-				},
-				maxdistance: {
-					type: 'REG_BINARY',
-					value: [
-						64,
-						0,
-						86,
-						0,
-						97,
-						0,
-						114,
-						0,
-						105,
-						0,
-						97,
-						0,
-						110,
-						0,
-						116,
-						0,
-						40,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						135,
-						0,
-						66,
-						0,
-						200,
-						0,
-						0,
-						0,
-						0,
-						0,
-						41,
-						0,
-					],
-				},
-				maxdistancevolume: {
-					type: 'REG_BINARY',
-					value: [
-						64,
-						0,
-						86,
-						0,
-						97,
-						0,
-						114,
-						0,
-						105,
-						0,
-						97,
-						0,
-						110,
-						0,
-						116,
-						0,
-						40,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						135,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						41,
-						0,
-					],
-				},
-				echomulti: {
-					type: 'REG_SZ',
-					value: 'false',
-				},
-				headphone: {
-					type: 'REG_SZ',
-					value: 'true',
-				},
-				input: {
-					type: 'REG_SZ',
-					value: 'WASAPI',
-				},
-				output: {
-					type: 'REG_SZ',
-					value: 'WASAPI',
-				},
-				postransmit: {
-					type: 'REG_SZ',
-					value: 'true',
-				},
+		'HKCU\\SOFTWARE\\Mumble\\Mumble\\audio': {
+			vadsource: {
+				type: 'REG_DWORD',
+				value: 1,
 			},
-		},
-		function (err) {
-			if (err) {
-				return {
-					status: 500,
-					data: err,
-				};
+			vadmin: {
+				type: 'REG_BINARY',
+				value: [64, 0, 86, 0, 97, 0, 114, 0, 105, 0, 97, 0, 110, 0, 116, 0, 40, 0, 0, 0, 0, 0, 0, 0, 135, 0, 63, 0, 76, 0, 205, 0, 154, 0, 41, 0],
+			},
+			vadmax: {
+				type: 'REG_BINARY',
+				value: [64, 0, 86, 0, 97, 0, 114, 0, 105, 0, 97, 0, 110, 0, 116, 0, 40, 0, 0, 0, 0, 0, 0, 0, 135, 0, 63, 0, 122, 0, 225, 0, 246, 0, 41, 0],
+			},
+			maxdistance: {
+				type: 'REG_BINARY',
+				value: [64, 0, 86, 0, 97, 0, 114, 0, 105, 0, 97, 0, 110, 0, 116, 0, 40, 0, 0, 0, 0, 0, 0, 0, 135, 0, 66, 0, 200, 0, 0, 0, 0, 0, 41, 0],
+			},
+			maxdistancevolume: {
+				type: 'REG_BINARY',
+				value: [64, 0, 86, 0, 97, 0, 114, 0, 105, 0, 97, 0, 110, 0, 116, 0, 40, 0, 0, 0, 0, 0, 0, 0, 135, 0, 0, 0, 0, 0, 0, 0, 0, 0, 41, 0],
+			},
+			headphone: {
+				type: 'REG_SZ',
+				value: 'true',
+			},
+			postransmit: {
+				type: 'REG_SZ',
+				value: 'true',
 			}
 		}
-	);
-	return {
-		status: 200,
-		data: 'ok',
 	};
+
+	regedit.createKey(['HKCU\\SOFTWARE\\Mumble'], function (err) {
+		if (err) {
+			log.warn(err);
+		}
+		regedit.createKey(['HKCU\\SOFTWARE\\Mumble\\Mumble'], function (err) {
+			if (err) {
+				log.warn(err);
+			}
+			regedit.createKey(['HKCU\\SOFTWARE\\Mumble\\Mumble\\audio'], function (err) {
+				if (err) {
+					log.warn(err);
+				}
+				regedit.putValue(values, function (err) {
+					if (err) {
+						log.warn(err);
+					}
+					event.reply('installGameRes', {
+						status: 200,
+						data: 'ok',
+					});
+				});
+			});
+		});
+	});
 }
 
 function installMinecraft() {
@@ -611,7 +419,7 @@ function playMumble(params) {
       gameList[params.gameId].name,
 		function (err) {
 			if (err) {
-				console.log(err);
+				log.warn(err);
 			}
 		}
 	);
@@ -624,7 +432,7 @@ function playMumble(params) {
 function playMinecraft() {
 	execFile('../../ReSpawnCache/' + gameList[1].name + '/TLauncher.exe', function (err, data) {
 		if (err) {
-			console.log(err);
+			log.warn(err);
 		}
 	});
 	return {

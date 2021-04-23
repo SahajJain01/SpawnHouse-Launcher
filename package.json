@@ -1,7 +1,7 @@
 {
   "name": "spawnhouse-launcher",
   "productName": "ReSpawn",
-  "version": "1.0.9",
+  "version": "1.0.11",
   "description": "ReSpawn description",
   "main": "src/index.js",
   "scripts": {
