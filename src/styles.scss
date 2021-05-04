@@ -125,6 +125,20 @@ footer {
   letter-spacing: 1px;
   z-index: 30;
 
+  a {
+    padding: 0 5px;
+    outline: none;
+    text-decoration: none;
+    color: #fff;
+    transition: 0.2s all ease-in-out;
+
+    &:hover {
+      text-decoration: none;
+      transition: 0.2s all ease-in-out;
+      color: #ff8d53;
+    }
+  }
+
   strong {
     display: inline-block;
     margin-left: 5px;

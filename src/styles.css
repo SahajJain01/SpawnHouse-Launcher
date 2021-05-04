@@ -144,6 +144,22 @@ footer {
   z-index: 30;
 }
 
+footer a {
+  padding: 0 5px;
+  outline: none;
+  text-decoration: none;
+  color: #fff;
+  -webkit-transition: 0.2s all ease-in-out;
+  transition: 0.2s all ease-in-out;
+}
+
+footer a:hover {
+  text-decoration: none;
+  -webkit-transition: 0.2s all ease-in-out;
+  transition: 0.2s all ease-in-out;
+  color: #ff8d53;
+}
+
 footer strong {
   display: inline-block;
   margin-left: 5px;
