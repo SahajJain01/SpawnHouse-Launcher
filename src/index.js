@@ -35,8 +35,7 @@ const gameList = [
 		feedUrl:
       'https://github.com/SpawnHouse/Minecraft/releases/latest/download/Minecraft.zip',
 		customParams: {
-			minecraftPath: process.env.APPDATA + '/.minecraft',
-			tlauncherPath: process.env.APPDATA + '/.tlauncher',
+			instanceName: 'Better-Minecraft-[FORGE]-v22.5'
 		},
 	},
 	{
@@ -357,39 +356,6 @@ function installMumble(event) {
 }
 
 function installMinecraft() {
-	if (!fs.existsSync(gameList[1].customParams.minecraftPath)) {
-		fs.mkdirSync(gameList[1].customParams.minecraftPath);
-	}
-	if (!fs.existsSync(gameList[1].customParams.tlauncherPath)) {
-		fs.mkdirSync(gameList[1].customParams.tlauncherPath);
-	}
-	if (!fs.existsSync(gameList[1].customParams.minecraftPath + '/mods')) {
-		fs.mkdirSync(gameList[1].customParams.minecraftPath + '/mods');
-	}
-	fs.copyFile(
-		'../../ReSpawnCache/' + gameList[1].name + '/mumblelink.jar',
-		gameList[1].customParams.minecraftPath + '/mods/mumblelink.jar',
-		(err) => {
-			if (err) {
-				return {
-					status: 500,
-					data: err,
-				};
-			}
-		}
-	);
-	fs.copyFile(
-		'../../ReSpawnCache/' + gameList[1].name + '/tlauncher-2.0.properties',
-		gameList[1].customParams.tlauncherPath + '/tlauncher-2.0.properties',
-		(err) => {
-			if (err) {
-				return {
-					status: 500,
-					data: err,
-				};
-			}
-		}
-	);
 	return {
 		status: 200,
 		data: 'ok',
@@ -430,11 +396,13 @@ function playMumble(params) {
 }
 
 function playMinecraft() {
-	execFile('../../ReSpawnCache/' + gameList[1].name + '/TLauncher.exe', function (err, data) {
-		if (err) {
-			log.warn(err);
-		}
-	});
+	execFile('../../ReSpawnCache/' + gameList[1].name + '/MultiMC.exe',
+		['-l', gameList[1].customParams.instanceName],
+		function (err, data) {
+			if (err) {
+				log.warn(err);
+			}
+		});
 	return {
 		status: 200,
 		data: 'ok',
@@ -477,13 +445,7 @@ function isMumbleInstalled() {
 }
 
 function isMinecraftInstalled() {
-	if (
-		fs.existsSync(
-			gameList[1].customParams.minecraftPath + '/mods/mumblelink.jar'
-		) &&
-    fs.existsSync(gameList[1].customParams.tlauncherPath + '/tlauncher-2.0.properties') &&
-    fs.existsSync('../../ReSpawnCache/' + gameList[1].name + '/TLauncher.exe')
-	) {
+	if (fs.existsSync('../../ReSpawnCache/' + gameList[1].name + '/MultiMC.exe')) {
 		return {
 			status: 200,
 			data: 'ok',

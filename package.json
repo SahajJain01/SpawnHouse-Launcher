@@ -1,8 +1,8 @@
 {
   "name": "spawnhouse-launcher",
   "productName": "ReSpawn",
-  "version": "1.0.11",
-  "description": "ReSpawn description",
+  "version": "1.1.0",
+  "description": "ReSpawn Launcher by Spawn House",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -13,7 +13,7 @@
   },
   "keywords": [],
   "author": {
-    "name": "Sain DxD",
+    "name": "Spawn House",
     "email": "saindxd@gmail.com"
   },
   "license": "MIT",
